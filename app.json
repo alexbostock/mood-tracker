@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Mood Tracker",
+    "slug": "mood-tracker",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "platforms": [
+      "android"
+    ],
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "githubUrl": "https://github.com/alexbostock/mood-tracker",
+    "backgroundColor": "#f5f5f5",
+    "primaryColor": "#e07da6"
+  }
+}
