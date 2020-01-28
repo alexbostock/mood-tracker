@@ -8,7 +8,6 @@ import rootReducer from '../reducers';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['activities'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

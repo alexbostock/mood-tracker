@@ -11,7 +11,8 @@ function Root() {
   const [newActivity, setNewActivity] = useState('');
 
   const saveActivity = () => {
-    dispatch(addActivity(newActivity))
+    dispatch(addActivity(newActivity));
+    setNewActivity('');
   }
   
   const activities = useSelector((state: RootState) => Object.entries(state.activities));
