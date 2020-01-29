@@ -7,14 +7,14 @@ import rootReducer from '../reducers';
 
 
 const MapOfSetTransform = createTransform(
-  (inboundState: Map<string, Set<string>>) => {
+  (inboundState: Map<any, Set<any>>) => {
     return Array.from(inboundState.entries()).map(entry => {
       const [key, set] = entry;
       return [key, Array.from(set)];
     });
   },
 
-  (outboundState: Array<[string, Array<string>]>) => {
+  (outboundState: Array<[any, Array<any>]>) => {
     const map = new Map();
     for (const entry of outboundState) {
       const [key, set] = entry;
@@ -26,14 +26,41 @@ const MapOfSetTransform = createTransform(
   { whitelist: ['activities'] }
 );
 
+const MapOfMapTransform = createTransform(
+  (inboundState: Map<any, Map<any, any>>) => {
+    return Array.from(inboundState.entries()).map(entry => {
+      const [key, map] = entry;
+      return [key, Array.from(map.entries())];
+    });
+  },
+
+  (outboundState: Array<[any, Array<[any, any]>]>) => {
+    const map = new Map<any, Map<any, any>>();
+    for (const entry of outboundState) {
+      const [key, subMap] = entry;
+      map.set(key, new Map());
+
+      for (const subEntry of subMap) {
+        const [subKey, val] = subEntry;
+        map.get(key).set(subKey, val);
+      };
+    }
+    return map;
+  },
+
+  { whitelist: ['moods'] }
+);
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   transforms: [
     MapOfSetTransform,
+    MapOfMapTransform,
   ],
   whitelist: [
     'activities',
+    'moods',
   ],
 };
 

@@ -2,6 +2,7 @@ import produce from 'immer';
 
 import { ActivityAction, ADD_ACTIVITY, REMOVE_ACTIVITY } from '../actions/activities';
 
+// date -> activities
 export type ActivitiesStore = Map<string, Set<string>>;
 
 function activities(state: ActivitiesStore = new Map(), action: ActivityAction) {
@@ -12,6 +13,7 @@ function activities(state: ActivitiesStore = new Map(), action: ActivityAction) 
         const set = draft.get(date) || new Set();
         set.add(action.activityType);
         draft.set(date, set);
+
         return draft;
       }
       case REMOVE_ACTIVITY: {
@@ -20,6 +22,7 @@ function activities(state: ActivitiesStore = new Map(), action: ActivityAction) 
         if (set) {
           set.delete(action.activityType);
         }
+
         return draft;
       }
     }
