@@ -11,15 +11,30 @@ function Root() {
   const [newActivity, setNewActivity] = useState('');
 
   const saveActivity = () => {
+    if (newActivity === '') {
+      return;
+    }
+
     dispatch(addActivity(newActivity));
     setNewActivity('');
   }
   
-  const activities = useSelector((state: RootState) => Object.entries(state.activities));
+  const activities: Array<JSX.Element> = useSelector(
+    (state: RootState) => Array.from(state.activities.entries())
+    .map((entry) => {
+      const [date, set] = entry;
+      return (
+        <View key={date}>
+          <Text>{date}</Text>
+          {Array.from(set).map((activity, i) => <Text key={i}>{activity}</Text>)}
+        </View>
+      )
+    })
+  );
 
   return (
     <View style={styles.container}>
-      {activities.length > 0 ? renderActivities(activities) : <Text>No activities stored</Text>}
+      {activities.length > 0 ? activities : <Text>No activities stored</Text>}
 
       <TextInput
         style={styles.input}
@@ -34,20 +49,6 @@ function Root() {
       />
     </View>
   );
-}
-
-function renderActivities(activities: Array<[string, Set<string>]>) {
-  return activities
-    .map(entry => {
-      const [date, entries] = entry;
-
-      return (
-        <View key={date}>
-          <Text >{date}</Text>
-          {Array.from(entries).map((activity, i) => <Text key={i}>{activity}</Text>)}
-        </View>
-      );
-    });
 }
 
 const styles = StyleSheet.create({
