@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { store, persistor } from './store';
 import Root from './components/Root';
 
-function App() {
+function App(): JSX.Element {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

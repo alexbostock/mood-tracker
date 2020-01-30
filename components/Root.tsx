@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addActivity } from '../actions/activities';
 import { RootState } from '../reducers';
 
-function Root() {
+function Root(): JSX.Element {
   const dispatch = useDispatch();
 
   const [newActivity, setNewActivity] = useState('');
