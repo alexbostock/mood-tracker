@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 
 import activities from './activities';
+import knownActivities from './knownActivities';
 import moods from './moods';
 
 const rootReducer = combineReducers({
   activities,
-  moods
+  knownActivities,
+  moods,
 });
 
 export default rootReducer;
