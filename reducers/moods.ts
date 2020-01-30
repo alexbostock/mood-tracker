@@ -1,9 +1,10 @@
 import produce from 'immer';
 
-import { MoodAction, SAVE_MOOD, Mood, Time } from '../actions/moods';
+import { MoodAction, SAVE_MOOD } from '../actions/moods';
+import { Rating, Time } from '../store/types';
 
 // date -> morning / night -> mood rating (1 - 5)
-export type MoodsStore = Map<string, Map<Time, Mood>>;
+export type MoodsStore = Map<string, Map<Time, Rating>>;
 
 function moods(state: MoodsStore = new Map(), action: MoodAction) {
   return produce(state, draft => {

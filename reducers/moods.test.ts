@@ -1,4 +1,6 @@
-import { SAVE_MOOD, Time, Mood } from '../actions/moods';
+import { SAVE_MOOD } from '../actions/moods';
+import { Rating, Time } from '../store/types';
+
 import reducer from './moods';
 
 describe('moods reducer', () => {
@@ -10,18 +12,18 @@ describe('moods reducer', () => {
       type: SAVE_MOOD,
       date,
       time,
-      mood: Mood.QuiteBad,
+      mood: Rating.QuiteBad,
     });
 
-    expect(state.get(date.toDateString()).get(time)).toBe(Mood.QuiteBad);
+    expect(state.get(date.toDateString()).get(time)).toBe(Rating.QuiteBad);
 
     state = reducer(state, {
       type: SAVE_MOOD,
       date,
       time,
-      mood: Mood.QuiteGood,
+      mood: Rating.QuiteGood,
     });
 
-    expect(state.get(date.toDateString()).get(time)).toBe(Mood.QuiteGood);
+    expect(state.get(date.toDateString()).get(time)).toBe(Rating.QuiteGood);
   });
 })

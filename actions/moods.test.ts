@@ -1,10 +1,11 @@
-import { SAVE_MOOD, saveMood, Mood, Time } from './moods';
+import { SAVE_MOOD, saveMood } from './moods';
+import { Rating, Time } from '../store/types';
 
 describe('moods actions', () => {
   it('creates save mood actions', () => {
     const date = new Date();
     const time = Time.Morning;
-    const mood = Mood.Good;
+    const mood = Rating.Good;
 
     const action = saveMood(mood, date, time);
     const expectedAction = {

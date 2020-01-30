@@ -14,7 +14,7 @@ import {
 const MapTransform = createTransform(
   inboundMapTransform(x => x),
   outboundMapTransform(x => x),
-  { whitelist: ['knownActivities'] },
+  { whitelist: ['knownActivities', 'sleep'] },
 );
 
 const MapOfSetTransform = createTransform(
@@ -41,6 +41,7 @@ const persistConfig = {
     'activities',
     'knownActivities',
     'moods',
+    'sleep',
   ],
 };
 
