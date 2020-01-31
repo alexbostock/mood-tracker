@@ -36,3 +36,7 @@ export interface PartialMedsRecord {
   name?: string
   time?: ClockTime
 }
+
+export enum Screen {
+  DayView,
+}
