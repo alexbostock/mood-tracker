@@ -10,6 +10,7 @@ import {
   outboundMapTransform,
   outboundSetTransform
 } from './transforms';
+import { MedsRecord } from './types';
 
 const MapTransform = createTransform(
   inboundMapTransform(x => x),
@@ -29,6 +30,18 @@ const MapOfMapTransform = createTransform(
   { whitelist: ['moods'] },
 );
 
+const MapOfMedsDataTransform = createTransform(
+  inboundMapTransform((val: { conf: MedsRecord, taken: Set<string> }) => ({
+    conf: val.conf,
+    taken: inboundSetTranform(x => x)(val.taken),
+  })),
+  outboundMapTransform((val: { conf: MedsRecord, taken: Array<string>}) => ({
+    conf: val.conf,
+    taken: outboundSetTransform(x => x)(val.taken),
+  })),
+  { whitelist: ['meds'] },
+);
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
@@ -36,12 +49,14 @@ const persistConfig = {
     MapTransform,
     MapOfSetTransform,
     MapOfMapTransform,
+    MapOfMedsDataTransform,
   ],
   whitelist: [
     'activities',
     'knownActivities',
     'moods',
     'sleep',
+    'meds',
   ],
 };
 
