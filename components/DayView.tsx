@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View, FlatList } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addActivity } from '../actions/activities';
@@ -20,7 +21,15 @@ interface Props {
 function DayView(props: Props): JSX.Element {
   const dispatch = useDispatch();
 
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [newActivity, setNewActivity] = useState('');
+
+  const setDate = (event, date) => {
+    setShowDatePicker(false);
+    if (date) {
+      props.setDate(date);
+    }
+  }
 
   const saveActivity = () => {
     if (newActivity === '') {
@@ -55,13 +64,16 @@ function DayView(props: Props): JSX.Element {
           <Button title="<" onPress={() => props.setDate(yesterday)} />
         </View>
 
-        <Text style={styles.date}>{props.date.toDateString()}</Text>
+        <View style={styles.date}>
+          <Button title={props.date.toDateString()} onPress={() => setShowDatePicker(true)} />
+        </View>
 
         <View style={styles.navButton}>
           <Button title=">" onPress={() => props.setDate(tomorrow)} />
         </View>
-
       </View>
+
+      {showDatePicker ? <DateTimePicker value={props.date} onChange={setDate} /> : null}
 
       <View style={styles.section}>
         <Text>{sleepRating ? 'Sleep rating' : 'How did you sleep?'}</Text>

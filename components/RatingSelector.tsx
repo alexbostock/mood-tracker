@@ -18,9 +18,8 @@ interface Props {
 
 function RatingSelector(props: Props): JSX.Element {
   const button = (rating: Rating) => (
-    <View style={rating === props.currentRating ? { borderWidth: 1, borderColor: 'red' } : {}}>
+    <View key={rating} style={rating === props.currentRating ? highlightedStyle : {}}>
       <Button
-        key={rating}
         title={rating.toString()}
         onPress={() => props.setter(rating)}
       />
@@ -33,5 +32,10 @@ function RatingSelector(props: Props): JSX.Element {
     </View>
   );
 }
+
+const highlightedStyle = {
+  borderColor: 'red',
+  borderWidth: 1,
+};
 
 export default RatingSelector;
