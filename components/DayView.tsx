@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import {
   Button,
-  CheckBox,
-  FlatList,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -18,9 +15,11 @@ import { saveMood } from '../actions/moods';
 import { saveSleepRating } from '../actions/sleep';
 import { RootState } from '../reducers';
 import { MoodRecord } from '../reducers/moods';
-import { MedsRecord, printTime, Rating, Screen, Time } from '../store/types';
+import { MedsRecord, Rating, Screen } from '../store/types';
 
-import RatingSelector from './RatingSelector';
+import Mood from './Mood';
+import Activities from './Activities';
+import Meds from './Meds';
 
 interface Props {
   changeScreen: (screenType: Screen) => void
@@ -32,22 +31,12 @@ function DayView(props: Props): JSX.Element {
   const dispatch = useDispatch();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [newActivity, setNewActivity] = useState('');
 
   const setDate = (event, date) => {
     setShowDatePicker(false);
     if (date) {
       props.setDate(date);
     }
-  }
-
-  const saveActivity = () => {
-    if (newActivity === '') {
-      return;
-    }
-
-    dispatch(addActivity(newActivity));
-    setNewActivity('');
   }
 
   const yesterday = new Date(props.date);
@@ -94,59 +83,32 @@ function DayView(props: Props): JSX.Element {
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>Mood</Text>
 
-          <Text>{sleepRating ? 'Sleep rating' : 'How did you sleep?'}</Text>
-          <RatingSelector
-            currentRating={sleepRating}
-            setter={rating => dispatch(saveSleepRating(rating, props.date))}
-          />
-
-          <Text>Morning mood</Text>
-          <RatingSelector
-            currentRating={moods ? moods.morning : null}
-            setter={rating => dispatch(saveMood(rating, props.date, Time.Morning))}
-          />
-
-          <Text>Evening mood</Text>
-          <RatingSelector
-            currentRating={moods ? moods.night : null}
-            setter={rating => dispatch(saveMood(rating, props.date, Time.Night))}
+          <Mood
+            sleepRating={sleepRating}
+            moods={moods}
+            setSleepRating={rating =>
+              dispatch(saveSleepRating(rating, props.date))}
+            setMood={(rating, time) =>
+              dispatch(saveMood(rating, props.date, time))}
           />
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>Meds</Text>
 
-          {meds.map(([conf, taken]) => (
-          <View key={conf.name} style={{ flexDirection: 'row' }}>
-              <Text>{conf.name}: {printTime(conf.time)}</Text>
-              <CheckBox
-                value={taken}
-                onValueChange={val =>
-                  dispatch(val ? medsTaken(conf.name) : medsNotTaken(conf.name))}
-              />
-            </View>
-          ))}
+          <Meds
+            meds={meds}
+            medsTaken={name => dispatch(medsTaken(name))}
+            medsNotTaken={name => dispatch(medsNotTaken(name))}
+          />
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>Activities</Text>
 
-          <View>
-            {Array.from(activities || new Set()).map(
-              (activity: string) => <Text key={activity}>{activity}</Text>
-            )}
-          </View>
-
-          <TextInput
-            style={styles.input}
-            placeholder="New Activity Name"
-            value={newActivity}
-            onChangeText={setNewActivity}
-          />
-
-          <Button
-            title="Add Activity"
-            onPress={saveActivity}
+          <Activities
+            activitiesSet={activities}
+            addActivity={activity => dispatch(addActivity(activity))}
           />
         </View>
       </ScrollView>
@@ -196,14 +158,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-
-  input: {
-    height: 40,
-    width: 200,
-    borderColor: 'grey',
-    borderWidth: 1,
-    padding: 8,
-  }
 });
 
 export default DayView;
