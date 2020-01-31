@@ -51,7 +51,7 @@ function DayView(props: Props): JSX.Element {
           <Button title="<" onPress={() => props.setDate(yesterday)} />
         </View>
 
-        <Text>{props.date.toDateString()}</Text>
+        <Text style={styles.date}>{props.date.toDateString()}</Text>
 
         <View style={styles.navButton}>
           <Button title=">" onPress={() => props.setDate(tomorrow)} />
@@ -115,6 +115,11 @@ const styles = StyleSheet.create({
 
   navButton: {
     margin: 16,
+  },
+
+  date: {
+    textAlign: 'center',
+    width: 200,
   },
 
   section: {
