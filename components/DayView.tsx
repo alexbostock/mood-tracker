@@ -3,9 +3,13 @@ import { Button, StyleSheet, Text, TextInput, View, FlatList } from 'react-nativ
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addActivity } from '../actions/activities';
+import { saveMood } from '../actions/moods';
+import { saveSleepRating } from '../actions/sleep';
 import { RootState } from '../reducers';
 import { MoodRecord } from '../reducers/moods';
-import { Screen, Rating } from '../store/types';
+import { Screen, Rating, Time } from '../store/types';
+
+import RatingSelector from './RatingSelector';
 
 interface Props {
   changeScreen: (screenType: Screen) => void
@@ -60,14 +64,23 @@ function DayView(props: Props): JSX.Element {
       </View>
 
       <View style={styles.section}>
-        <Text>Sleep</Text>
-        <Text>{sleepRating || 'No sleep data'}</Text>
+        <Text>{sleepRating ? 'Sleep rating' : 'How did you sleep?'}</Text>
+        <RatingSelector
+          currentRating={sleepRating}
+          setter={rating => dispatch(saveSleepRating(rating, props.date))}
+        />
 
         <Text>Morning mood</Text>
-        <Text>{moods && moods.morning || 'No mood recorded'}</Text>
+        <RatingSelector
+          currentRating={moods ? moods.morning : null}
+          setter={rating => dispatch(saveMood(rating, props.date, Time.Morning))}
+        />
 
         <Text>Evening mood</Text>
-        <Text>{moods && moods.night || 'No mood recorded'}</Text>
+        <RatingSelector
+          currentRating={moods ? moods.night : null}
+          setter={rating => dispatch(saveMood(rating, props.date, Time.Night))}
+        />
       </View>
 
       <View style={styles.section}>
