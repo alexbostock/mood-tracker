@@ -27,6 +27,14 @@ export class ClockTime {
   }
 }
 
+export function printTime(time: ClockTime) {
+  return leftPad(time.hours) + ':' + leftPad(time.minutes);
+}
+
+function leftPad(num) {
+  return num < 10 ? '0' + num : num;
+}
+
 export interface MedsRecord {
   name: string,
   time: ClockTime,
