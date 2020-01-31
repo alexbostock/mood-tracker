@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { addActivity } from '../actions/activities';
 import { RootState } from '../reducers';
-import { Screen, Rating, Time } from '../store/types';
+import { MoodRecord } from '../reducers/moods';
+import { Screen, Rating } from '../store/types';
 
 interface Props {
   changeScreen: (screenType: Screen) => void
@@ -35,7 +36,7 @@ function DayView(props: Props): JSX.Element {
     (state: RootState) => state.sleep.get(props.date.toDateString())
   );
 
-  const moods: Map<Time, Rating> = useSelector(
+  const moods: MoodRecord = useSelector(
     (state: RootState) => state.moods.get(props.date.toDateString())
   );
 
@@ -63,16 +64,10 @@ function DayView(props: Props): JSX.Element {
         <Text>{sleepRating || 'No sleep data'}</Text>
 
         <Text>Morning mood</Text>
-        <Text>{
-          moods && moods.get(Time.Morning) ?
-            moods.get(Time.Morning) : 'No moods recorded'
-        }</Text>
+        <Text>{moods && moods.morning || 'No mood recorded'}</Text>
 
         <Text>Evening mood</Text>
-        <Text>{
-          moods && moods.get(Time.Night) ?
-            moods.get(Time.Night) : 'No moods recorded'
-        }</Text>
+        <Text>{moods && moods.night || 'No mood recorded'}</Text>
       </View>
 
       <View style={styles.section}>

@@ -3,18 +3,28 @@ import produce from 'immer';
 import { MoodAction, SAVE_MOOD } from '../actions/moods';
 import { Rating, Time } from '../store/types';
 
-// date -> morning / night -> mood rating (1 - 5)
-export type MoodsStore = Map<string, Map<Time, Rating>>;
+export interface MoodRecord {
+  morning: Rating,
+  night: Rating,
+}
+
+// date -> MoodRecord
+export type MoodsStore = Map<string, MoodRecord>;
 
 function moods(state: MoodsStore = new Map(), action: MoodAction) {
   return produce(state, draft => {
     switch (action.type) {
       case SAVE_MOOD: {
         const date = action.date.toDateString();
-        const map = draft.get(date) || new Map();
-        draft.set(date, map);
+        const record = draft.get(date) || { morning: null, night: null };
 
-        map.set(action.time, action.mood);
+        if (action.time === Time.Morning) {
+          record.morning = action.mood;
+        } else {
+          record.night = action.mood;
+        }
+
+        draft.set(date, record);
 
         return draft;
       }
