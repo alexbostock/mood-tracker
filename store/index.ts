@@ -15,19 +15,13 @@ import { MedsRecord } from './types';
 const MapTransform = createTransform(
   inboundMapTransform(x => x),
   outboundMapTransform(x => x),
-  { whitelist: ['knownActivities', 'sleep'] },
+  { whitelist: ['knownActivities', 'moods', 'sleep'] },
 );
 
 const MapOfSetTransform = createTransform(
   inboundMapTransform(inboundSetTranform(x => x)),
   outboundMapTransform(outboundSetTransform(x => x)),
   { whitelist: ['activities'] },
-);
-
-const MapOfMapTransform = createTransform(
-  inboundMapTransform(inboundMapTransform(x => x)),
-  outboundMapTransform(outboundMapTransform(x => x)),
-  { whitelist: ['moods'] },
 );
 
 const MapOfMedsDataTransform = createTransform(
@@ -48,7 +42,6 @@ const persistConfig = {
   transforms: [
     MapTransform,
     MapOfSetTransform,
-    MapOfMapTransform,
     MapOfMedsDataTransform,
   ],
   whitelist: [
