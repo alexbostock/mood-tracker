@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import { Rating, Time } from '../store/types';
+import { Rating, Time } from '../../store/types';
 
 import RatingSelector from './RatingSelector';
-import { MoodRecord } from '../reducers/moods';
+import { MoodRecord } from '../../reducers/moods';
 
 interface Props {
   sleepRating: Rating

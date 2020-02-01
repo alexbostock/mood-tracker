@@ -1,7 +1,7 @@
 import React from 'react';
 import { CheckBox, Text, View} from 'react-native';
 
-import { MedsRecord, printTime } from '../store/types';
+import { MedsRecord, printTime } from '../../store/types';
 
 interface Props {
   meds: Array<[MedsRecord, boolean]>

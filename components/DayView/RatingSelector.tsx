@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Rating } from '../store/types';
+import { Rating } from '../../store/types';
 import { Button, View } from 'react-native';
 
 const allRatings = [

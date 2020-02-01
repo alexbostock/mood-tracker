@@ -9,13 +9,13 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addActivity } from '../actions/activities';
-import { medsTaken, medsNotTaken } from '../actions/meds';
-import { saveMood } from '../actions/moods';
-import { saveSleepRating } from '../actions/sleep';
-import { RootState } from '../reducers';
-import { MoodRecord } from '../reducers/moods';
-import { MedsRecord, Rating, Screen } from '../store/types';
+import { addActivity } from '../../actions/activities';
+import { medsTaken, medsNotTaken } from '../../actions/meds';
+import { saveMood } from '../../actions/moods';
+import { saveSleepRating } from '../../actions/sleep';
+import { RootState } from '../../reducers';
+import { MoodRecord } from '../../reducers/moods';
+import { MedsRecord, Rating, Screen } from '../../store/types';
 
 import Mood from './Mood';
 import Activities from './Activities';
@@ -78,7 +78,11 @@ function DayView(props: Props): JSX.Element {
       </View>
 
       <ScrollView contentContainerStyle={styles.container}>
-        {showDatePicker ? <DateTimePicker value={props.date} onChange={setDate} /> : null}
+        {
+          showDatePicker ?
+          <DateTimePicker value={props.date} onChange={setDate} />
+          : null
+        }
 
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>Mood</Text>
