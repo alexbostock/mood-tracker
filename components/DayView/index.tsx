@@ -22,7 +22,6 @@ import Activities from './Activities';
 import Meds from './Meds';
 
 interface Props {
-  changeScreen: (screenType: Screen) => void
   date: Date
   setDate: (date: Date) => void
 }
@@ -32,7 +31,7 @@ function DayView(props: Props): JSX.Element {
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const setDate = (event, date) => {
+  const setDate = (_, date: Date) => {
     setShowDatePicker(false);
     if (date) {
       props.setDate(date);
