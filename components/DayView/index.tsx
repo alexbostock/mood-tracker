@@ -158,8 +158,9 @@ const styles = StyleSheet.create({
   },
 
   sectionHeading: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 8,
   },
 });
 

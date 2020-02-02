@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Rating } from '../../store/types';
-import { Button, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 
 const allRatings = [
   Rating.Bad,
@@ -12,6 +12,7 @@ const allRatings = [
 ];
 
 interface Props {
+  title: string
   currentRating: Rating
   setter: (rating: Rating) => void
 }
@@ -25,11 +26,15 @@ function RatingSelector(props: Props): JSX.Element {
       />
     </View>
   );
-    
+
   return (
-    <View style={{ flexDirection: 'row' }}>
-      {allRatings.map(rating => button(rating))}
-    </View>
+    <>
+      <Text style={{ marginBottom: 8 }}>{props.title}</Text>
+
+      <View style={{ flexDirection: 'row', marginBottom: 16 }}>  
+        {allRatings.map(rating => button(rating))}
+      </View>
+    </>
   );
 }
 

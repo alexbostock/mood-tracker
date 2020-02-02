@@ -26,17 +26,19 @@ function Activities(props: Props): JSX.Element {
         )}
       </View>
 
-      <TextInput
-        style={inputStyles}
-        placeholder="New Activity Name"
-        value={newActivity}
-        onChangeText={setNewActivity}
-      />
+      <View style={{ flexDirection: 'row' }}>
+        <TextInput
+          style={inputStyles}
+          placeholder="New Activity Name"
+          value={newActivity}
+          onChangeText={setNewActivity}
+        />
 
-      <Button
-        title="Add Activity"
-        onPress={saveActivity}
-      />
+        <Button
+          title="Add"
+          onPress={saveActivity}
+        />
+      </View>
     </>
   );
 }
@@ -46,6 +48,8 @@ const inputStyles = {
   width: 200,
   borderColor: 'grey',
   borderWidth: 1,
+
+  marginRight: 16,
   padding: 8,
 };
 

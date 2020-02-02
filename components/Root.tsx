@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 import DayView from './DayView';
 import Preferences from './Preferences';
@@ -30,23 +30,39 @@ function Root(): JSX.Element {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.nav}>
       {renderScreen()}
 
       <View style={{ flexDirection: 'row' }}>
-        <Button
-          title="Main"
-          onPress={() => setCurrentScreen(Screen.DayView)}
-        />
+        <View style={styles.navButton}>
+          <Button
+            title="Main"
+            onPress={() => setCurrentScreen(Screen.DayView)}
+          />
+        </View>
 
-        <Button
-          title="Settings"
-          onPress={() => setCurrentScreen(Screen.Preferences)}
-        />
+        <View style={styles.navButton}>
+          <Button
+            title="Settings"
+            onPress={() => setCurrentScreen(Screen.Preferences)}
+          />
+        </View>
       </View>
     </View>
   );
-  // TODO: navigation
 }
+
+const styles = StyleSheet.create({
+  nav: {
+    flex: 1,
+
+    alignItems: 'center',
+  },
+
+  navButton: {
+    margin: 16,
+    width: 100,
+  }
+});
 
 export default Root;

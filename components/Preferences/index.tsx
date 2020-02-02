@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ScrollView, Text } from 'react-native';
+import React from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addMedsReminder, editMedsReminder, removeMedsReminder } from '../../actions/meds';
@@ -38,8 +38,8 @@ function Preferences(): JSX.Element {
   }
 
   return (
-    <ScrollView style={{ padding: 32}}>
-      <Text>Settings</Text>
+    <ScrollView style={styles.container}>
+      <Text style={styles.heading}>Settings</Text>
 
       {Array.from(meds.entries()).map(([_, conf]) =>
         <MedsRecordInput
@@ -60,5 +60,18 @@ function Preferences(): JSX.Element {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 32,
+  },
+
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  }
+})
 
 export default Preferences;
