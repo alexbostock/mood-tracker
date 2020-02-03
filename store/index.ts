@@ -47,9 +47,10 @@ const persistConfig = {
   whitelist: [
     'activities',
     'knownActivities',
-    'moods',
-    'sleep',
     'meds',
+    'moods',
+    'notifications',
+    'sleep',
   ],
 };
 

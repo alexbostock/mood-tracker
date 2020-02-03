@@ -4,6 +4,7 @@ import activities from './activities';
 import knownActivities from './knownActivities';
 import meds from './meds';
 import moods from './moods';
+import notifications from './notifications';
 import sleep from './sleep';
 
 const rootReducer = combineReducers({
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   knownActivities,
   meds,
   moods,
+  notifications,
   sleep,
 });
 
