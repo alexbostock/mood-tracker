@@ -1,6 +1,8 @@
 import {
   SET_NOTIFICATION_TIME,
   TOGGLE_NOTIFICATION,
+  SET_NOTIFICATION_ID,
+  CANCEL_NOTIFICATION,
 } from '../actions/notifications';
 import { Time } from '../store/types';
 
@@ -12,19 +14,19 @@ describe('notifications reducer', () => {
       type: TOGGLE_NOTIFICATION,
       notification: Time.Morning,
     });
-    expect(state.morning.enabled).toBe(true);
+    expect(state.morning.enabled).toBe(false);
 
     state = reducer(state, {
       type: TOGGLE_NOTIFICATION,
       notification: Time.Morning,
     });
-    expect(state.morning.enabled).toBe(false);
+    expect(state.morning.enabled).toBe(true);
 
     state = reducer(undefined, {
       type: TOGGLE_NOTIFICATION,
       notification: Time.Morning,
     });
-    expect(state.morning.enabled).toBe(true);
+    expect(state.morning.enabled).toBe(false);
   });
 
   it('updates notification times', () => {
@@ -51,4 +53,36 @@ describe('notifications reducer', () => {
 
     expect(state.night.time).toBe(time.getTime());
   });
-})
+
+  it('sets notification IDs', () => {
+    let state = reducer(undefined, {
+      type: TOGGLE_NOTIFICATION,
+      notification: Time.Night,
+    });
+
+    expect(state.night.notificationId).toBe(undefined);
+
+    state = reducer(state, {
+      type: SET_NOTIFICATION_ID,
+      notification: Time.Night,
+      id: 25,
+    });
+
+    expect(state.night.notificationId).toBe(25);
+  });
+
+  it('removes notification IDs', () => {
+    let state = reducer(undefined, {
+      type: SET_NOTIFICATION_ID,
+      notification: Time.Morning,
+      id: 42,
+    });
+
+    state = reducer(state, {
+      type: CANCEL_NOTIFICATION,
+      notification: Time.Morning,
+    });
+
+    expect(state.morning.notificationId).toBe(undefined);
+  })
+});
