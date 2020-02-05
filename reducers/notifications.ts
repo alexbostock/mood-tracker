@@ -7,11 +7,11 @@ import {
   SET_NOTIFICATION_ID,
   CANCEL_NOTIFICATION,
 } from '../actions/notifications';
-import { Time } from '../store/types';
+import { ClockTime, Time } from '../store/types';
 
 interface NotificationRecord {
   enabled: boolean
-  time: number
+  time: ClockTime
   notificationId?: number
 }
 
@@ -20,15 +20,9 @@ export interface NotificationsStore {
   night: NotificationRecord
 }
 
-const defaultTime = new Date();
-defaultTime.setHours(8);
-defaultTime.setMinutes(0);
-defaultTime.setSeconds(0);
-defaultTime.setMilliseconds(0);
-
 const defaultState: NotificationsStore = {
-  morning: { enabled: true, time: defaultTime.getTime() },
-  night: { enabled: true, time: defaultTime.getTime() + 13 * 60 * 60 * 1000 }
+  morning: { enabled: true, time: new ClockTime(8, 0) },
+  night: { enabled: true, time: new ClockTime(21, 0) }
 }
 
 function notifications(

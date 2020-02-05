@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addMedsReminder, editMedsReminder, removeMedsReminder } from '../../actions/meds';
@@ -7,6 +7,7 @@ import { RootState } from '../../reducers';
 import { MedsRecord, ClockTime } from '../../store/types';
 
 import MedsRecordInput from './MedsRecordInput';
+import NotificationsPreferences from './NotificationsPreferences';
 
 function Preferences(): JSX.Element {
   const dispatch = useDispatch();
@@ -40,6 +41,8 @@ function Preferences(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.heading}>Settings</Text>
+
+      <NotificationsPreferences />
 
       {Array.from(meds.entries()).map(([_, conf]) =>
         <MedsRecordInput

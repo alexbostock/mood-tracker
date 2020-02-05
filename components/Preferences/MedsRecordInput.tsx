@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { ClockTime, MedsRecord, printTime } from '../../store/types';
+import TimePicker from './TimePicker';
 
 interface Props {
   name: string
@@ -17,10 +17,10 @@ function MedsRecordInput(props: Props): JSX.Element {
   const [time, setTime] = useState(props.time);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const updateTime = (_, val: Date) => {
+  const updateTime = (time: ClockTime) => {
     setShowTimePicker(false);
-    if (val) {
-      setTime(dateToCt(val));
+    if (time) {
+      setTime(time);
     }
   }
 
@@ -46,14 +46,11 @@ function MedsRecordInput(props: Props): JSX.Element {
         onPress={() => setShowTimePicker(true)}
       />
 
-      {showTimePicker ?
-        <DateTimePicker
-          mode="time"
-          value={ctToDate(time)}
-          onChange={updateTime}
-        />
-        : null
-      }
+      <TimePicker
+        show={showTimePicker}
+        time={time}
+        callback={updateTime}
+      />
 
       <Button
         title="Save"
@@ -69,18 +66,6 @@ function MedsRecordInput(props: Props): JSX.Element {
       }
     </View>
   );
-}
-
-function ctToDate(time: ClockTime) {
-  const result = new Date();
-  result.setHours(time.hours);
-  result.setMinutes(time.minutes);
-
-  return result;
-}
-
-function dateToCt(time: Date) {
-  return new ClockTime(time.getHours(), time.getMinutes());
 }
 
 export default MedsRecordInput;

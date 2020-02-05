@@ -1,5 +1,7 @@
-import { Time } from "../store/types";
-import notifications from "../reducers/notifications";
+import { Notifications } from "expo";
+
+import { RootState } from "../reducers";
+import { ClockTime, Time } from "../store/types";
 
 export const SET_NOTIFICATION_TIME = 'SET_NOTIFICATION_TIME';
 export const TOGGLE_NOTIFICATION = 'TOGGLE_NOTIFICATION';
@@ -9,7 +11,7 @@ export const CANCEL_NOTIFICATION = 'CANCEL_NOTIFICATION';
 interface SetNotificationTimeAction {
   type: typeof SET_NOTIFICATION_TIME
   notification: Time
-  time: number
+  time: ClockTime
 }
 
 interface ToggleNotificationAction {
@@ -34,28 +36,85 @@ export type NotificationAction =
   | SetIdAction
   | CancelNotificationAction;
 
-const action: NotificationAction = {
-  type: TOGGLE_NOTIFICATION,
-  notification: Time.Morning,
+const morningContent = {
+  title: 'How did you sleep?',
+  body: 'Make a note of how you feel',
 }
 
-export const setNotificationTime = (
-  notification: Time,
-  time: number,
-): NotificationAction => ({
-  type: SET_NOTIFICATION_TIME,
-  notification,
-  time,
-});
+const nightContent = {
+  title: 'What did you do today?',
+  body: 'Make a note of how you feel',
+}
 
-export const toggleNotification = (
-  notification: Time,
-): NotificationAction => ({
-  type: TOGGLE_NOTIFICATION,
-  notification,
-});
+function unsetNotification(notification: Time) {
+  return (dispatch, getState: () => RootState) => {
+    const morning = notification === Time.Morning;
 
-export const setNotificationId = (
+    const state = getState().notifications;
+    const config = morning ? state.morning : state.night;
+    if (config.notificationId) {
+      Notifications.cancelScheduledNotificationAsync(config.notificationId);
+    }
+
+    dispatch(cancelNotification(notification));
+  }
+}
+
+function setNotification(notification: Time, time: ClockTime) {
+  return (dispatch, getState: () => RootState) => {
+    unsetNotification(notification)(dispatch, getState);
+    
+    const morning = notification === Time.Morning;
+    const content = morning ? morningContent : nightContent;
+
+    const date: Date = new Date();
+    date.setHours(time.hours);
+    date.setMinutes(time.minutes);
+    if (date < new Date()) {
+      date.setDate(date.getDate() + 1);
+    }
+
+    const notificationTime: number = date.getTime();
+
+    Notifications.scheduleLocalNotificationAsync(
+      content,
+      { time: notificationTime, repeat: 'day' },
+    )
+    .then((id: number) => dispatch(setNotificationId(notification, id)));
+  }
+}
+
+export function setNotificationTime(notification: Time, time: ClockTime) {
+  return (dispatch, getState: () => RootState) => {
+    setNotification(notification, time)(dispatch, getState);
+
+    dispatch({
+      type: SET_NOTIFICATION_TIME,
+      notification,
+      time,
+    });
+  }
+}
+
+export function toggleNotification(notification) {
+  return (dispatch, getState: () => RootState) => {
+    const state = getState().notifications;
+    const config = notification === Time.Morning ? state.morning : state.night;
+
+    if (config.enabled) {
+      unsetNotification(notification)(dispatch, getState);
+    } else {
+      setNotification(notification, config.time)(dispatch, getState);
+    }
+
+    dispatch({
+      type: TOGGLE_NOTIFICATION,
+      notification,
+    });
+  }
+}
+
+const setNotificationId = (
   notification: Time,
   id: number,
 ): NotificationAction => ({
@@ -64,7 +123,7 @@ export const setNotificationId = (
   id,
 });
 
-export const cancelNotification = (
+const cancelNotification = (
   notification: Time,
 ): NotificationAction => ({
   type: CANCEL_NOTIFICATION,

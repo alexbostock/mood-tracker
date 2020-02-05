@@ -4,7 +4,7 @@ import {
   SET_NOTIFICATION_ID,
   CANCEL_NOTIFICATION,
 } from '../actions/notifications';
-import { Time } from '../store/types';
+import { ClockTime, Time } from '../store/types';
 
 import reducer from './notifications';
 
@@ -30,28 +30,24 @@ describe('notifications reducer', () => {
   });
 
   it('updates notification times', () => {
-    const time = new Date();
-    time.setHours(21);
-    time.setMinutes(0);
-    time.setSeconds(0);
-    time.setMilliseconds(0);
+    let time = new ClockTime(21, 0);
 
     let state = reducer(undefined, {
       type: TOGGLE_NOTIFICATION,
       notification: Time.Night,
     });
 
-    expect(state.night.time).toBe(time.getTime());
+    expect(state.night.time).toStrictEqual(time);
 
-    time.setMinutes(30);
+    time = new ClockTime(time.hours, time.minutes + 30);
 
     state = reducer(state, {
       type: SET_NOTIFICATION_TIME,
       notification: Time.Night,
-      time: time.getTime(),
+      time,
     });
 
-    expect(state.night.time).toBe(time.getTime());
+    expect(state.night.time).toBe(time);
   });
 
   it('sets notification IDs', () => {
