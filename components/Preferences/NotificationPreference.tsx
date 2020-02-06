@@ -3,7 +3,10 @@ import { Button, Switch, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import TimePicker from './TimePicker';
-import { setNotificationTime, toggleNotification } from '../../actions/notifications';
+import {
+  setNotificationTime,
+  toggleNotification,
+} from '../../actions/notificationThunks';
 import { Time, ClockTime, printTime } from '../../store/types';
 
 interface Props {

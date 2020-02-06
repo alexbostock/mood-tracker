@@ -9,7 +9,7 @@ import {
 } from '../actions/notifications';
 import { ClockTime, Time } from '../store/types';
 
-interface NotificationRecord {
+export interface NotificationRecord {
   enabled: boolean
   time: ClockTime
   notificationId?: number
