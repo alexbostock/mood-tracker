@@ -51,5 +51,6 @@ export interface PartialMedsRecord {
 
 export enum Screen {
   DayView,
+  Insights,
   Preferences,
 }

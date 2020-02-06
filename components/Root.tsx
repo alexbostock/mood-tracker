@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
 import DayView from './DayView';
+import Insights from './Insights';
 import Preferences from './Preferences';
 
 import { Screen } from '../store/types';
@@ -18,6 +19,10 @@ function Root(): JSX.Element {
             date={dateDisplayed}
             setDate={setDateDisplayed}
           />
+        );
+      case Screen.Insights:
+        return (
+          <Insights />
         );
       case Screen.Preferences:
         return (
@@ -43,6 +48,13 @@ function Root(): JSX.Element {
 
         <View style={styles.navButton}>
           <Button
+            title="Insights"
+            onPress={() => setCurrentScreen(Screen.Insights)}
+          />
+        </View>
+
+        <View style={styles.navButton}>
+          <Button
             title="Settings"
             onPress={() => setCurrentScreen(Screen.Preferences)}
           />
@@ -60,8 +72,8 @@ const styles = StyleSheet.create({
   },
 
   navButton: {
-    margin: 16,
-    width: 100,
+    margin: 12,
+    width: 92,
   }
 });
 
