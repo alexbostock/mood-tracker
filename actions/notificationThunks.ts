@@ -70,12 +70,17 @@ function setNotification(
 export function setNotificationTime(notification: Time, time: ClockTime) {
   return (dispatch: (action: NotificationAction) => void, getState: () => RootState) => {
     const morning = notification === Time.Morning;
-    setNotification(
-      notification,
-      time,
-      morning ? getState().notifications.morning : getState().notifications.night,
-      dispatch,
-    );
+    const state = getState().notifications;
+    const config = morning ? state.morning : state.night;
+  
+    if (config.enabled) {
+      setNotification(
+        notification,
+        time,
+        config,
+        dispatch,
+      );
+    }
 
     dispatch({
       type: SET_NOTIFICATION_TIME,
