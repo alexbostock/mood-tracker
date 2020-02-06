@@ -30,26 +30,29 @@ function NotificationPreference(props: Props): JSX.Element {
   const morning = props.notification === Time.Morning;
 
   return (
-    <>
+    <View style={{ marginBottom: 16 }}>
       <View style={{ flexDirection: 'row' }}>
-        <Text>{morning ? 'Morning' : 'Evening'}</Text>
+        <Text style={{flex: 2}}>{morning ? 'Morning' : 'Evening'}</Text>
         <Switch
+          style={{flex: 1}}
           value={props.enabled}
           onValueChange={() => dispatch(toggleNotification(props.notification))}
         />
       </View>
 
+      <View style={{ width: 64 }}>
         <Button
           title={printTime(props.time)}
           onPress={() => setShowTimePicker(true)}
         />
+      </View>
 
-        <TimePicker
-          show={showTimePicker}
-          time={props.time}
-          callback={updateTime}
-        />
-    </>
+      <TimePicker
+        show={showTimePicker}
+        time={props.time}
+        callback={updateTime}
+      />
+    </View>
   );
 }
 

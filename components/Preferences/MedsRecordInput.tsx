@@ -34,36 +34,39 @@ function MedsRecordInput(props: Props): JSX.Element {
   }
 
   return (
-    <View>
+    <View style={{ marginBottom: 16 }}>
       <TextInput
+        style={{ borderColor: 'grey', borderWidth: 1, height: 40, marginBottom: 8 }}
         placeholder="Name"
         value={name}
         onChangeText={setName}
       />
 
-      <Button
-        title={printTime(time)}
-        onPress={() => setShowTimePicker(true)}
-      />
-
-      <TimePicker
-        show={showTimePicker}
-        time={time}
-        callback={updateTime}
-      />
-
-      <Button
-        title="Save"
-        onPress={save}
-      />
-
-      {props.delete ?
+      <View style={{ flexDirection: 'row' }}>
         <Button
-          title="Delete"
-          onPress={props.delete}
+          title={printTime(time)}
+          onPress={() => setShowTimePicker(true)}
         />
-        : null
-      }
+
+        <TimePicker
+          show={showTimePicker}
+          time={time}
+          callback={updateTime}
+        />
+
+        <Button
+          title="Save"
+          onPress={save}
+        />
+
+        {props.delete ?
+          <Button
+            title="Delete"
+            onPress={props.delete}
+          />
+          : null
+        }
+      </View>
     </View>
   );
 }

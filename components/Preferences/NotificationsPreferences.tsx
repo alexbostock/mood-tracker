@@ -36,8 +36,6 @@ function NotificationsPreferences(): JSX.Element {
 
   return (
     <View>
-      <Text>Notifications</Text>
-
       <NotificationPreference
         notification={Time.Morning}
         enabled={notificationsConfig.morning.enabled}

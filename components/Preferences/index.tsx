@@ -42,7 +42,11 @@ function Preferences(): JSX.Element {
     <ScrollView style={styles.container}>
       <Text style={styles.heading}>Settings</Text>
 
+      <Text style={styles.subheading}>Notifications</Text>
+
       <NotificationsPreferences />
+
+      <Text style={styles.subheading}>Meds</Text>
 
       {Array.from(meds.entries()).map(([_, conf]) =>
         <MedsRecordInput
@@ -68,12 +72,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 32,
+    width: '100%',
   },
 
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+  },
+
+  subheading: {
+    fontSize: 20,
+    fontWeight: 'bold',
   }
 })
 
