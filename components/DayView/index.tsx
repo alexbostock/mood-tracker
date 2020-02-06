@@ -15,7 +15,7 @@ import { saveMood } from '../../actions/moods';
 import { saveSleepRating } from '../../actions/sleep';
 import { RootState } from '../../reducers';
 import { MoodRecord } from '../../reducers/moods';
-import { MedsRecord, Rating, Screen } from '../../store/types';
+import { MedsRecord, Rating, quantifyTime } from '../../store/types';
 
 import Mood from './Mood';
 import Activities from './Activities';
@@ -57,6 +57,7 @@ function DayView(props: Props): JSX.Element {
 
   const meds: Array<[MedsRecord, boolean]> = useSelector(
     (state: RootState) => Array.from(state.meds.entries())
+      .sort(([_, a], [__, b]) => quantifyTime(a.conf.time) - quantifyTime(b.conf.time))
       .map(([_, val]) => [val.conf, val.taken.has(props.date.toDateString())])
   );
 

@@ -27,6 +27,10 @@ export class ClockTime {
   }
 }
 
+export function quantifyTime(time: ClockTime) {
+  return time.hours * 100 + time.minutes;
+}
+
 export function printTime(time: ClockTime) {
   return leftPad(time.hours) + ':' + leftPad(time.minutes);
 }
