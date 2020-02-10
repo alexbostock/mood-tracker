@@ -1,9 +1,11 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '../../reducers';
 import { Rating } from '../../store/types';
+
+import DateNavigator, { TimeUnit } from '../DateNavigator';
 
 interface DateRecord {
   date: string
@@ -12,9 +14,15 @@ interface DateRecord {
   activities: Set<string>
 }
 
-function Insights(): JSX.Element {
+interface Props {
+  date: Date
+}
+
+function Insights(props: Props): JSX.Element {
+  const [date, setDate] = useState(new Date(props.date));
+
   const dates: Array<DateRecord> = useSelector(
-    (state: RootState) => allDatesThisMonth()
+    (state: RootState) => allDatesInMonth(date)
       .map(date => date.toDateString())
       .map(date => ({
         date,
@@ -29,36 +37,36 @@ function Insights(): JSX.Element {
     weeks.push(dates.slice(i, i + 7));
   }
 
-  console.log(weeks.map(week => week.map(data => data.date)));
-
   return (
-    <View style={{ flex: 1, margin: 16 }}>
-      <View style={{ flexDirection: 'row' }}>
-        {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
-          <View key={i} style={{ flex: 1 }}>
-            <Text style={{ padding: 8, textAlign: 'center' }}>{day}</Text>
-          </View>
-        ))}
-      </View>
-
-      {weeks.map((week, index) => (
-        <View key={index} style={{ flexDirection: 'row' }}>
-          {week.map((data, index) => (
-            <View
-              key={index}
-              style={{ backgroundColor: [5, 6].includes(index) ? 'grey' : 'lightgrey' }}
-            >
-              <Text style={{ padding: 8 }}>{data.date.split(' ')[2]}</Text>
-            </View>
+    <View style={{ flex: 1, margin: 32 }}>
+      <DateNavigator
+        date={date}
+        setDate={setDate}
+        scrollOnly={true}
+        scrollInterval={TimeUnit.Month}
+      />
+      <View style={styles.table}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
+            <Text key={i} style={styles.tableCell}>{day}</Text>
           ))}
         </View>
-      ))}
+
+        {weeks.map(dailyMoods)}
+      </View>
+
+      <View style={{ flex: 1 }}>
+        <Text>morning mood / night mood</Text>
+        <Text>In the absence of more insightful insights, have a quote instead.</Text>
+        <Text>"Never put off until tomorrow what you can do the day after tomorrow" - Mark Twain</Text>
+      </View>
     </View>
   );
 }
 
-function allDatesThisMonth(): Array<Date> {
-  const date = new Date();
+function allDatesInMonth(date: Date): Array<Date> {
+  date = new Date(date);
+
   date.setDate(1);
 
   const daysBeforeMonthStart = date.getDay() === 0 ? 6 : date.getDay() - 1;
@@ -87,5 +95,44 @@ function allDatesThisMonth(): Array<Date> {
 
   return answer;
 }
+
+function dailyMoods(week: Array<DateRecord>, index: number): JSX.Element {
+  return (
+    <View key={index} style={{ flex: 1, flexDirection: 'row' }}>
+      {week.map((record: DateRecord, i: number) => (
+        <Text style={styles.tableCell} key={i}>{dailyMood(record)}</Text>
+      ))}
+    </View>
+  );
+}
+
+function dailyMood(record: DateRecord): string {
+  if (!record.moods) {
+    return '-/-';
+  }
+
+  const morn = record.moods.morning == null ? '-' : record.moods.morning;
+  const night = record.moods.night == null ? '-' : record.moods.night;
+
+  return morn + '/' + night;
+}
+
+const styles = StyleSheet.create({
+  table: {
+    flex: 1,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: 'black',
+  },
+
+  tableCell: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    borderColor: 'black',
+
+    textAlign: 'center',
+  },
+});
 
 export default Insights;

@@ -22,7 +22,7 @@ function Root(): JSX.Element {
         );
       case Screen.Insights:
         return (
-          <Insights />
+          <Insights date={dateDisplayed} />
         );
       case Screen.Preferences:
         return (
@@ -35,32 +35,36 @@ function Root(): JSX.Element {
   }
 
   return (
-    <View style={styles.nav}>
-      {renderScreen()}
+    <>
+      <View style={{ flex: 10 }}>
+        {renderScreen()}
+      </View>
 
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.navButton}>
-          <Button
-            title="Main"
-            onPress={() => setCurrentScreen(Screen.DayView)}
-          />
-        </View>
+      <View style={styles.nav}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.navButton}>
+            <Button
+              title="Main"
+              onPress={() => setCurrentScreen(Screen.DayView)}
+            />
+          </View>
 
-        <View style={styles.navButton}>
-          <Button
-            title="Insights"
-            onPress={() => setCurrentScreen(Screen.Insights)}
-          />
-        </View>
+          <View style={styles.navButton}>
+            <Button
+              title="Insights"
+              onPress={() => setCurrentScreen(Screen.Insights)}
+            />
+          </View>
 
-        <View style={styles.navButton}>
-          <Button
-            title="Settings"
-            onPress={() => setCurrentScreen(Screen.Preferences)}
-          />
+          <View style={styles.navButton}>
+            <Button
+              title="Settings"
+              onPress={() => setCurrentScreen(Screen.Preferences)}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 }
 

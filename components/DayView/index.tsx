@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Button,
   ScrollView,
   StyleSheet,
   Text,
   View
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addActivity } from '../../actions/activities';
@@ -17,6 +15,7 @@ import { RootState } from '../../reducers';
 import { MoodRecord } from '../../reducers/moods';
 import { MedsRecord, Rating, quantifyTime } from '../../store/types';
 
+import DateNavigator, { TimeUnit } from '../DateNavigator';
 import Mood from './Mood';
 import Activities from './Activities';
 import Meds from './Meds';
@@ -28,20 +27,6 @@ interface Props {
 
 function DayView(props: Props): JSX.Element {
   const dispatch = useDispatch();
-
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const setDate = (_, date: Date) => {
-    setShowDatePicker(false);
-    if (date) {
-      props.setDate(date);
-    }
-  }
-
-  const yesterday = new Date(props.date);
-  yesterday.setDate(props.date.getDate() - 1);
-  const tomorrow = new Date(props.date);
-  tomorrow.setDate(props.date.getDate() + 1);
 
   const sleepRating: Rating = useSelector(
     (state: RootState) => state.sleep.get(props.date.toDateString())
@@ -63,27 +48,14 @@ function DayView(props: Props): JSX.Element {
 
   return (
     <View style={styles.root}>
-      <View style={styles.nav}>
-        <View style={styles.navButton}>
-          <Button title="<" onPress={() => props.setDate(yesterday)} />
-        </View>
-
-        <View style={styles.date}>
-          <Button title={props.date.toDateString()} onPress={() => setShowDatePicker(true)} />
-        </View>
-
-        <View style={styles.navButton}>
-          <Button title=">" onPress={() => props.setDate(tomorrow)} />
-        </View>
-      </View>
+      <DateNavigator
+        date={props.date}
+        setDate={props.setDate}
+        scrollOnly={false}
+        scrollInterval={TimeUnit.Day}
+      />
 
       <ScrollView contentContainerStyle={styles.container}>
-        {
-          showDatePicker ?
-          <DateTimePicker value={props.date} onChange={setDate} />
-          : null
-        }
-
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>Mood</Text>
 
@@ -123,26 +95,7 @@ function DayView(props: Props): JSX.Element {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-  },
-
-  nav: {
-    height: 68,
-
-    flexDirection: 'row',
-
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    paddingTop: 32,
-  },
-
-  navButton: {
-    margin: 16,
-  },
-
-  date: {
-    textAlign: 'center',
-    width: 200,
+    margin: 32,
   },
 
   container: {
