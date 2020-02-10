@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addActivity } from '../../actions/activities';
+import { addActivity, removeActivity } from '../../actions/activities';
 import { medsTaken, medsNotTaken } from '../../actions/meds';
 import { saveMood } from '../../actions/moods';
 import { saveSleepRating } from '../../actions/sleep';
@@ -84,7 +84,8 @@ function DayView(props: Props): JSX.Element {
 
           <Activities
             activitiesSet={activities}
-            addActivity={activity => dispatch(addActivity(activity))}
+            addActivity={a => dispatch(addActivity(a, props.date))}
+            removeActivity={a => dispatch(removeActivity(a, props.date))}
           />
         </View>
       </ScrollView>
