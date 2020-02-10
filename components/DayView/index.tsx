@@ -40,6 +40,12 @@ function DayView(props: Props): JSX.Element {
     (state: RootState) => state.activities.get(props.date.toDateString())
   );
 
+  const knownActivities: Array<string> = useSelector(
+    (state: RootState) => Array.from(state.knownActivities.entries() || [])
+      .map(([activity, _]) => activity)
+      .sort()
+  );
+
   const meds: Array<[MedsRecord, boolean]> = useSelector(
     (state: RootState) => Array.from(state.meds.entries())
       .sort(([_, a], [__, b]) => quantifyTime(a.conf.time) - quantifyTime(b.conf.time))
@@ -84,6 +90,7 @@ function DayView(props: Props): JSX.Element {
 
           <Activities
             activitiesSet={activities}
+            knownActivities={knownActivities}
             addActivity={a => dispatch(addActivity(a, props.date))}
             removeActivity={a => dispatch(removeActivity(a, props.date))}
           />

@@ -6,7 +6,6 @@ import {ActivityAction, ADD_ACTIVITY, REMOVE_ACTIVITY } from '../actions/activit
 // Each activity has a reference count, so that no longer used activities are
 // no longer suggested (removed when reference count reaches 0).
 
-
 // activity -> reference count
 export type KnownActivitiesStore = Map<string, number>;
 

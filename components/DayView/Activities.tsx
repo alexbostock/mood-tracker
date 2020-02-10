@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
+
+import DatalistInput from './DatalistInput';
 
 interface Props {
   activitiesSet: Set<string>
+  knownActivities: Array<string>
   addActivity: (activity: string) => void
   removeActivity: (activity: string) => void
 }
@@ -36,11 +39,11 @@ function Activities(props: Props): JSX.Element {
       </View>
 
       <View style={{ flexDirection: 'row' }}>
-        <TextInput
-          style={inputStyles}
-          placeholder="New Activity Name"
+        <DatalistInput
           value={newActivity}
-          onChangeText={setNewActivity}
+          updateValue={setNewActivity}
+          label="New Activity Name"
+          suggestedValues={props.knownActivities}
         />
 
         <Button
@@ -51,15 +54,5 @@ function Activities(props: Props): JSX.Element {
     </>
   );
 }
-
-const inputStyles = {
-  height: 40,
-  width: 200,
-  borderColor: 'grey',
-  borderWidth: 1,
-
-  marginRight: 16,
-  padding: 8,
-};
 
 export default Activities;
