@@ -2,12 +2,13 @@
   "expo": {
     "name": "Mood Tracker",
     "slug": "mood-tracker",
+    "description": "",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
       "android"
     ],
-    "version": "0.0.1",
+    "version": "0.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
