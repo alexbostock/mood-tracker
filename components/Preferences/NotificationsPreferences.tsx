@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 
-import { setNotificationTime } from '../../actions/notifications';
 import { RootState } from '../../reducers';
 import { NotificationsStore } from '../../reducers/notifications';
-import { ClockTime, Time } from '../../store/types';
+import { Time } from '../../store/types';
 
 import NotificationPreference from './NotificationPreference';
 
 function NotificationsPreferences(): JSX.Element {
-  const dispatch = useDispatch();
-
   const [notificationsAvailable, setNotificationsAvailable] = useState(false);
 
   useEffect(() => {
